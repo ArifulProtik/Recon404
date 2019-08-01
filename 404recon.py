@@ -4,6 +4,11 @@ import requests
 from bs4 import BeautifulSoup
 href = []
 headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
 
 def linkExtractor():
 	link = input("Enter Link:")
@@ -36,7 +41,10 @@ def Check404():
 		except requests.exceptions.SSLError:
 			continue
 		else:
-			print("[ "+str(f.status_code)+" ]  " + line)
+			if f.status_code == 200:
+				print(bcolors.OKGREEN + "[ "+ str(f.status_code)+ " ]")
+			else:
+				print(bcolors.WARNING + "[ "+ str(f.status_code)+ " ]")
 			
 def mainf():
 	linkExtractor()
