@@ -4,6 +4,7 @@ import requests
 import os,time
 from bs4 import BeautifulSoup
 href = []
+unique = []
 headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
 class bcolors:
     HEADER = '\033[95m'
@@ -26,19 +27,20 @@ def linkExtractor():
 		html = r.text
 		soup = BeautifulSoup(html,'html.parser')
 		for l in soup.find_all('a'):
-			href.append(l.get('href'))
+			if len(l.get("href").strip()) > 1 and l.get("href")[0] != '#' and 'javascript:' not in l.get("href").strip() and 'mailto:' not in l.get("href").strip() and 'tel:' not in l.get("href").strip():
+				if 'http' in l.get("href").strip() or 'https' in l.get("href").strip():
+					href.append(l.get("href").strip())
+					
+def uniquelink(href):
+	for x in href:
+		if x not in unique:
+			unique.append(x)
 
 def Check404():
-	print("Total "+ str(len(href)) + " link Found")
-	for line in href:
+	print("Total "+ str(len(unique)) + " link Found")
+	for line in unique:
 		try:
 			f = requests.get(line,headers=headers)
-		except requests.URLRequired:
-			continue
-		except requests.exceptions.MissingSchema:
-			continue
-		except requests.exceptions.InvalidSchema:
-			continue
 		except requests.exceptions.SSLError:
 			continue
 		else:
@@ -58,5 +60,6 @@ def banner():
 def mainf():
 	banner()
 	linkExtractor()
+	uniquelink(href)
 	Check404() 
 mainf()
