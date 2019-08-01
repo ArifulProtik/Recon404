@@ -27,7 +27,9 @@ def Check404():
 			f = requests.get(line,headers=headers)
 		except requests.URLRequired:
 			continue
-		except requests.SSLError:
+		except requests.exceptions.MissingSchema:
+			continue
+		except requests.exceptions.SSLError:
 			continue
 		else:
 			print("[ "+str(f.status_code)+" ]  " + line)
