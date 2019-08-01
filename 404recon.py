@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import requests
+import os,time
 from bs4 import BeautifulSoup
 href = []
 headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
@@ -42,11 +43,20 @@ def Check404():
 			continue
 		else:
 			if f.status_code == 200:
-				print(bcolors.OKGREEN + "[ "+ str(f.status_code)+ " ]")
+				print(bcolors.OKGREEN + "[ "+ str(f.status_code)+ " ]"+line)
 			else:
-				print(bcolors.WARNING + "[ "+ str(f.status_code)+ " ]")
-			
+				print(bcolors.WARNING + "[ "+ str(f.status_code)+ " ]" + line)
+				
+				
+
+def banner():
+    if (os.name in ('ce', 'nt', 'dos')):
+        os.system('cls')
+    elif ('posix' in os.name):
+        os.system('clear')
+    print(bcolors.HEADER+"Started Recon404 \n \n")			
 def mainf():
+	banner()
 	linkExtractor()
 	Check404() 
 mainf()
