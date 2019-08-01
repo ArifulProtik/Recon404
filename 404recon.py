@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 import requests
 from bs4 import BeautifulSoup
 href = []
@@ -28,6 +30,8 @@ def Check404():
 		except requests.URLRequired:
 			continue
 		except requests.exceptions.MissingSchema:
+			continue
+		except requests.exceptions.InvalidSchema:
 			continue
 		except requests.exceptions.SSLError:
 			continue
